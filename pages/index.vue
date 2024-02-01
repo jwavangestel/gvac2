@@ -23,9 +23,10 @@
             </UCard>
             
  
-            <div>     
-                <EventCard v-for="(event, index) in programStore.events.events" :key="event.id" :event="event"  :index="index" />
-            </div>
+            <div>  
+                <EventCard v-for="(event, index) in events.events" :key="event.id" :event="event"  :index="index" />
+
+              </div>
   
             <UCard class="mb-2 ring-0">
                 <div class="grid grid-cols-6">
@@ -66,11 +67,13 @@
 </template>
 
 <script setup>
-    import { useProgramStore } from '../stores/programStore'
 
-    const programStore = useProgramStore()
+    import EventCard from '@/components/EventCard.vue'
+    const { data: events } = await useAsyncData('events', () => {
+        return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
+    })
 </script>
 
-<style  scoped>
+<style lang="scss" scoped>
 
 </style>

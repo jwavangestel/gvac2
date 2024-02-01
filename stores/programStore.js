@@ -1,10 +1,22 @@
-import { defineStore } from  'pinia'
-import eventData from '../data/events.json'
+import { defineStore } from  "pinia";
 
-export const useProgramStore = defineStore('programStore', () => {
-    const events = ref(eventData)
-
-    return {
-        events
+export 
+const usedataStore = defineStore('dataStore', {
+    state: () => ({
+        events: []
+    }),
+    actions: {
+        getEvents() {
+        async $fetch() {
+            const events = await $fetch('https://gvacdata:8890/?jaar=2024&maand=2')
+            .then(response => {
+                return this.events = response.data 
+ 
+            })
+            .catch(error => {
+                throw error
+            })
+        }
+    }
     }
 })
