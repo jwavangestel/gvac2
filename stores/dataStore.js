@@ -3,6 +3,6 @@ import { defineStore } from  "pinia";
 export 
 const usedataStore = defineStore('dataStore', {
     state: () => ({
-        editmode: [1, 2, 3]
+        editmode: ["off","off", "off", "off"]
     }),
 })

@@ -1,6 +1,7 @@
 <template>
     <div>
         <UCard class="ring-0">
+            {{ editmode[index] }}
             <div class="grid grid-cols-12">
                 <div class="col-start-3 and col-end-11"> 
                     <div class="hover:scale-[1.01] hover:shadow-md">
@@ -16,6 +17,9 @@
                                     </div>
                                     <div class="col-start-5 and col-end-10"> 
                                         {{ event.route  }} {{ event.naam  }}
+                                        <div v-if="editmode[index] === 'on'">
+                                            beer
+                                        </div>
                                     </div>
                                     <div class="col-start-10 and col-end-13"> 
                                         {{event.heen10}}+{{ event.terug10 }} / {{event.heen}}+{{ event.terug }} km
@@ -79,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col-start-11 and col-end-13"> 
-                    <UButton icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Bewerken" :trailing="false"></UButton>
+                    <UButton v-on:click="status(index)" icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Bewerken" :trailing="false"></UButton>
                     <UButton icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Stop bewerken" :trailing="false"></UButton>
                     <UButton icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Verwiijderen" :trailing="false"></UButton>
                 </div>
@@ -89,6 +93,7 @@
 </template>
 
 <script setup>
+    import { usedataStore } from '@/stores/dataStore.js'
 defineProps({
   event: {
     type: Object,
@@ -101,14 +106,25 @@ defineProps({
   },
 })
 
+const data_Store = usedataStore()
+const editmode = computed(() => data_Store.editmode);
+
  function formatDateDay(date) {
       const options = {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
       return new Date(date).toLocaleDateString('nl', options)
     }
 
+    function status(index) {
+        if (data_Store.editmode[index] === 'off') {
+        data_Store.editmode[index] = 'on'
+        } else  {
+            data_Store.editmode[index] = 'off'  
+            data_Store.update = true   
+        }
+    }
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
