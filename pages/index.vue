@@ -3,6 +3,7 @@
         <main class="text-base" >  
             <UCard class="mb-2 ring-0">
                 <div class="grid grid-cols-6">
+ 
                     <div class="col-start-2 and col-end-6">
                         <div class="font-bold flex justify-center">GVAC wandelprogramma Februari 2024</div> 
                         <br>
@@ -69,6 +70,11 @@
 <script setup>
 
     import EventCard from '@/components/EventCard.vue'
+    import { usedataStore } from '@/stores/dataStore.js'
+
+    const data_Store = usedataStore()
+    const editmode = computed(() => data_Store.editmode);
+
     const { data: events } = await useAsyncData('events', () => {
         return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
     })
