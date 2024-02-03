@@ -70,6 +70,12 @@
                             </div>
                             <div class="col-start-3 and col-end-12"> 
                                 {{ event.restaurant }} in {{ event.plaats}}, telefoon: {{ event.telefoon }}
+                                <div v-if="editmode[index] === 'on'">
+                                    <USelect 
+                                    color="white"
+                                    :options="[event.restaurant1, event.restaurant2, event.restaurant3]"
+                                />
+                                </div>
                             </div>
                         </div>               
                         <div class="grid grid-cols-12">

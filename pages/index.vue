@@ -75,9 +75,14 @@
     const data_Store = usedataStore()
     const editmode = computed(() => data_Store.editmode);
 
+    const { data: evnt } = await useAsyncData('events', () => {
+        return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
+    })    
+
     const { data: events } = await useAsyncData('events', () => {
         return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
     })
+
 </script>
 
 <style lang="scss" scoped>
