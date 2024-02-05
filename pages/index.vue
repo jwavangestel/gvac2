@@ -3,7 +3,7 @@
         <main class="text-base" >  
             <UCard class="mb-2 ring-0">
                 <div class="grid grid-cols-6">
- 
+
                     <div class="col-start-2 and col-end-6">
                         <div class="font-bold flex justify-center">GVAC wandelprogramma Februari 2024</div> 
                         <br>
@@ -22,7 +22,6 @@
                     </div>
                 </div>
             </UCard>
-            
  
             <div>  
                 <EventCard v-for="(event, index) in events.events" :key="event.id" :event="event"  :index="index" />
@@ -54,10 +53,7 @@
         </p>
       </div>
       <div class="w3-col w3-container m2 l2 ">
-        <div>
-          <p v-if="editstatus === 'on'">
-          </p>
-        </div>
+
 
                     </div>
                 </div>
@@ -75,13 +71,30 @@
     const data_Store = usedataStore()
     const editmode = computed(() => data_Store.editmode);
 
-    const { data: evnt } = await useAsyncData('events', () => {
-        return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
-    })    
+    const { data: allroutes } = await useAsyncData('allroutes', () => {
+        return $fetch('https://gvacdata.janenlenneke.nl/?allroutes=%27%20%27&Rjaar=2024&Rmaand=2')
+    })   
+    data_Store.allroutes = allroutes.value 
 
     const { data: events } = await useAsyncData('events', () => {
         return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
     })
+    data_Store.events = events.value
+
+    let aantalEvents = (events.value.events.length)
+    let aantalPauzepl = (events.value.PpauzeL.length) 
+    for (let y = 0; y < aantalEvents ; y++) {
+        let datum = (events.value.events[y].datum)
+        let z = 0
+        for (let i = 0; i < aantalPauzepl ; i++) {
+            if (datum === events.value.PpauzeL[i].datum) {
+            data_Store.Ppauzeloc[1][y] = events.value.events[y].pauzeplaats
+            data_Store.Ppauzeloc[0][y] [z] = events.value.PpauzeL[i]
+            z = z + 1
+            }
+       }
+    }
+
 
 </script>
 

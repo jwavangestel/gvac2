@@ -1,7 +1,6 @@
 <template>
     <div>
         <UCard class="ring-0">
-            {{ editmode[index] }}
             <div class="grid grid-cols-12">
                 <div class="col-start-3 and col-end-11"> 
                     <div class="hover:scale-[1.01] hover:shadow-md">
@@ -68,14 +67,15 @@
                             <div class="col-start-1 and col-end-2"> 
                                 Pauze: 
                             </div>
-                            <div class="col-start-3 and col-end-12"> 
-                                {{ event.restaurant }} in {{ event.plaats}}, telefoon: {{ event.telefoon }}
-                                <div v-if="editmode[index] === 'on'">
-                                    <USelect 
-                                    color="white"
-                                    :options="[event.restaurant1, event.restaurant2, event.restaurant3]"
-                                />
+                            <div class="col-start-3 and col-end-12 .bg-gray-200"> 
+
+                                <div  v-if="editmode[index] === 'on'">
+                                    <USelect v-model="country[index]" :options="pPauzeLoc[index]" option-attribute="restaurant" />
+
                                 </div>
+                                <div v-if="editmode[index] === 'off'">
+                                    {{ event.restaurant }} in {{ event.plaats}}, telefoon: {{ event.telefoon }}
+                               </div>
                             </div>
                         </div>               
                         <div class="grid grid-cols-12">
@@ -112,8 +112,17 @@ defineProps({
   },
 })
 
+
 const data_Store = usedataStore()
 const editmode = computed(() => data_Store.editmode);
+const pPauzeLoc = computed(() => data_Store.Ppauzeloc[0]);
+const allroutes = computed(() => data_Store.allroutes);
+
+const country = computed (() => data_Store.Ppauzeloc[1]);
+
+
+
+
 
  function formatDateDay(date) {
       const options = {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
