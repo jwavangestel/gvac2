@@ -1,12 +1,13 @@
 <template>
     <div>
-        <UCard class="ring-0">
+        <br>
+        <UCard class="ring-0" >
             <div class="grid grid-cols-12">
+
                 <div class="col-start-3 and col-end-11"> 
                     <div class="hover:scale-[1.01] hover:shadow-md">
                         <div class="grid grid-cols-12">
-                            {{ index }}
-                            <div class="col-start-1 and col-end-2"> 
+                            <div class="col-start-1 and col-end-2 font-bold"> 
                                 Datum: 
                             </div>
                             <div class="col-start-3 and col-end-12 font-bold"> 
@@ -15,9 +16,13 @@
                                         {{ formatDateDay(event.datum) }}
                                     </div>
                                     <div class="col-start-5 and col-end-10"> 
-                                        {{ event.route  }} {{ event.naam  }}
+
                                         <div v-if="editmode[index] === 'on'">
-                                            beer
+                                            <USelect v-model="routenr[index][0]" :options="allroutes" option-attribute="naam" />
+
+                                        </div>
+                                        <div v-if="editmode[index] === 'off'">
+                                            {{ event.route  }} {{ event.naam  }}
                                         </div>
                                     </div>
                                     <div class="col-start-10 and col-end-13"> 
@@ -70,6 +75,7 @@
                             <div class="col-start-3 and col-end-12 .bg-gray-200"> 
 
                                 <div  v-if="editmode[index] === 'on'">
+                        
                                     <USelect v-model="country[index]" :options="pPauzeLoc[index]" option-attribute="restaurant" />
 
                                 </div>
@@ -89,9 +95,13 @@
                     </div>
                 </div>
                 <div class="col-start-11 and col-end-13"> 
-                    <UButton v-on:click="status(index)" icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Bewerken" :trailing="false"></UButton>
-                    <UButton icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Stop bewerken" :trailing="false"></UButton>
-                    <UButton icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Verwiijderen" :trailing="false"></UButton>
+                    <div  v-if="editmode[index] === 'off'">
+                        <UButton v-on:click="status(index)" icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Bewerken" :trailing="false"></UButton>
+                    </div>
+                    <div  v-if="editmode[index] === 'on'">
+                        <UButton  v-on:click="status(index)" icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Stop bewerken" :trailing="false"></UButton>
+                        <UButton  v-on:click="status(index)" icon="i-heroicons-pencil-square" size="sm" color="gray" variant="solid" label="Verwiijderen" :trailing="false"></UButton>
+                    </div>
                 </div>
             </div>
         </UCard>    
@@ -100,6 +110,7 @@
 
 <script setup>
     import { usedataStore } from '@/stores/dataStore.js'
+    import { ref, watch } from 'vue'
 defineProps({
   event: {
     type: Object,
@@ -116,10 +127,22 @@ defineProps({
 const data_Store = usedataStore()
 const editmode = computed(() => data_Store.editmode);
 const pPauzeLoc = computed(() => data_Store.Ppauzeloc[0]);
-const allroutes = computed(() => data_Store.allroutes);
-
 const country = computed (() => data_Store.Ppauzeloc[1]);
+const allroutes = computed(() => data_Store.allroutes.allroutes);
+const routenr = computed(() => data_Store.allroutes.routenr);
 
+watch (data_Store.Ppauzeloc[1], async (newData, oldData) => {
+    const cindex = 99
+    const l = data_Store.events.Ppauze.length
+    console.log (l)
+    for (let j = 0; j < l ; j++){
+        if (data_Store.Ppauzeloc[1][j] != data_Store.events.Ppauze[j].pauzeplaats) {
+            
+            console.log (data_Store.Ppauzeloc[1][j])
+            console.log (data_Store.events.Ppauze[j].pauzeplaats)
+        }
+    }
+})
 
 
 
@@ -129,14 +152,14 @@ const country = computed (() => data_Store.Ppauzeloc[1]);
       return new Date(date).toLocaleDateString('nl', options)
     }
 
-    function status(index) {
-        if (data_Store.editmode[index] === 'off') {
-        data_Store.editmode[index] = 'on'
-        } else  {
-            data_Store.editmode[index] = 'off'  
-            data_Store.update = true   
-        }
+function status(index) {
+    if (data_Store.editmode[index] === 'off') {
+    data_Store.editmode[index] = 'on'
+    } else  {
+        data_Store.editmode[index] = 'off'  
+        data_Store.update = true   
     }
+}
 
 </script>
 
