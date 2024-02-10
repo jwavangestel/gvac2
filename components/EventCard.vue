@@ -140,6 +140,10 @@ watch (data_Store.Ppauzeloc[1], async (newData, oldData) => {
             
             console.log (data_Store.Ppauzeloc[1][j])
             console.log (data_Store.events.Ppauze[j].pauzeplaats)
+            const { data: events } = await useAsyncData('events', () => {
+                return $fetch('https://gvacdata.janenlenneke.nl/?datum=20240201&pauzeplaats=9', {
+                method: "POST" })
+    })
         }
     }
 })
