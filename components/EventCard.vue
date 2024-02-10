@@ -131,22 +131,7 @@ const country = computed (() => data_Store.Ppauzeloc[1]);
 const allroutes = computed(() => data_Store.allroutes.allroutes);
 const routenr = computed(() => data_Store.allroutes.routenr);
 
-watch (data_Store.Ppauzeloc[1], async (newData, oldData) => {
-    const cindex = 99
-    const l = data_Store.events.Ppauze.length
-    console.log (l)
-    for (let j = 0; j < l ; j++){
-        if (data_Store.Ppauzeloc[1][j] != data_Store.events.Ppauze[j].pauzeplaats) {
-            
-            console.log (data_Store.Ppauzeloc[1][j])
-            console.log (data_Store.events.Ppauze[j].pauzeplaats)
-            const { data: events } = await useAsyncData('events', () => {
-                return $fetch('https://gvacdata.janenlenneke.nl/?datum=20240201&pauzeplaats=9', {
-                method: "POST" })
-    })
-        }
-    }
-})
+
 
 
 

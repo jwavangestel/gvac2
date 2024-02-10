@@ -95,6 +95,38 @@
        }
     }
 
+    watch (data_Store.Ppauzeloc[1], async (newData, oldData) => {
+    const cindex = 99
+    const l = data_Store.events.Ppauze.length
+    console.log (l)
+    for (let j = 0; j < l ; j++){
+        if (data_Store.Ppauzeloc[1][j] != data_Store.events.Ppauze[j].pauzeplaats) {
+            
+            console.log (data_Store.Ppauzeloc[1][j])
+            console.log (data_Store.events.Ppauze[j].pauzeplaats)
+            const { data: events } = await useAsyncData('events', () => {
+                return $fetch('https://gvacdata.janenlenneke.nl/?datum=20240201&pauzeplaats=9', {
+                method: "POST" })
+
+    })
+
+    
+    const { data: allroutes } = await useAsyncData('allroutes', () => {
+        return $fetch('https://gvacdata.janenlenneke.nl/?allroutes=%27%20%27&Rjaar=2024&Rmaand=2')
+    })   
+    data_Store.allroutes = allroutes.value 
+
+    const { data: events2 } = await useAsyncData('events', () => {
+        return $fetch('https://gvacdata.janenlenneke.nl/?jaar=2024&maand=2')
+    })
+    data_Store.events = events2.value
+
+    
+
+        }
+    }
+})
+
 
 </script>
 

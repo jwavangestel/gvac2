@@ -6,6 +6,7 @@ const usedataStore = defineStore('dataStore', {
         events: [],
         editmode: ["off","off", "off", "off"],
         allroutes: [],
+        update: false,
         Ppauzeloc: [
             [      
                 [
