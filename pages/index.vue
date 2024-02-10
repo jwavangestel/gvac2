@@ -105,7 +105,7 @@
             console.log (data_Store.Ppauzeloc[1][j])
             console.log (data_Store.events.Ppauze[j].pauzeplaats)
             const { data: events } = await useAsyncData('events', () => {
-                return $fetch('https://gvacdata.janenlenneke.nl/?datum=20240201&pauzeplaats=9', {
+                return $fetch('https://gvacdata.janenlenneke.nl/?datum=' + data_Store.events.events[j].datum + '&pauzeplaats=' + data_Store.Ppauzeloc[1][j], {
                 method: "POST" })
 
     })
